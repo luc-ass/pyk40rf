@@ -494,3 +494,18 @@ class TestForbiddenResources:
         gateway.route("/a", status=401, payload={})
         with pytest.raises(K40AuthError):
             await client.async_get_many(["/a"])
+
+
+@pytest.mark.parametrize("status", [400, 401, 403])
+async def test_the_token_endpoint_treats_every_4xx_as_credentials(
+    gateway: FakeGateway, session: aiohttp.ClientSession, status: int
+) -> None:
+    """The data API distinguishes 401 from 403; this endpoint must not.
+
+    /auth/token does one thing, so any of these is about the credentials --
+    the opposite of async_get_raw, where 403 means the resource is refused.
+    """
+    gateway.route("/auth/token", status=status, payload={"error": "invalid_grant"})
+    client = make_client(gateway, session, token=None)
+    with pytest.raises(K40AuthError, match="invalid_grant"):
+        await client.async_request_token("x", "aaaa-bbbb-cccc-dddd")

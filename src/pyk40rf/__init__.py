@@ -56,7 +56,7 @@ from .models import (
 )
 from .parser import is_error_label, parse_resource, parse_system_info
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 __all__ = [
     "AUTH_PORT",

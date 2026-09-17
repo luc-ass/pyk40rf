@@ -166,6 +166,10 @@ class K40Client:
                         "for about a second, then retry from inside its subnet "
                         f"({_error_of(body) or 'physical_proximity_unproven'})"
                     )
+                # Unlike the data API, 403 here does mean "rejected": this
+                # endpoint does exactly one thing, so every 4xx below is about
+                # the credentials. Do not "align" this with async_get_raw,
+                # where 403 means the resource is refused, not the token.
                 if response.status in (400, 401, 403):
                     reason = _error_of(body)
                     raise K40AuthError(
