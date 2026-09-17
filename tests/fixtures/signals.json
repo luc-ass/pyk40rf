@@ -1,0 +1,355 @@
+{
+  "id": "/signals",
+  "type": "refEnum",
+  "references": [
+    {
+      "id": "/signals/SRC.CUHP.HP1.CompressorSpeedActual",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.CompressorSpeedActual"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.Timer.CompressorRestart",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.Timer.CompressorRestart"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HMI.BuzzerActive",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HMI.BuzzerActive"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.Stats.CompressorDHW",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.Stats.CompressorDHW"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.CompressorStatus",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.CompressorStatus"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.DripPanTemp",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.DripPanTemp"
+    },
+    {
+      "id": "/signals/SRC.IntDHW.HeatUpActive",
+      "uri": "https://192.0.2.10:9443/signals/SRC.IntDHW.HeatUpActive"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HPSTest.Status",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HPSTest.Status"
+    },
+    {
+      "id": "/signals/SRC.CUHP.StartUpCheck",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.StartUpCheck"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.ReturnTemp",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.ReturnTemp"
+    },
+    {
+      "id": "/signals/SRC.CUHP.CH.HC1PumpRelay",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.CH.HC1PumpRelay"
+    },
+    {
+      "id": "/signals/SC.SeasonOpt.TimerStopHeatingSeason",
+      "uri": "https://192.0.2.10:9443/signals/SC.SeasonOpt.TimerStopHeatingSeason"
+    },
+    {
+      "id": "/signals/SRC.RelayStatus.3WayValve",
+      "uri": "https://192.0.2.10:9443/signals/SRC.RelayStatus.3WayValve"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.MinCoolingTempSetpoint",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.MinCoolingTempSetpoint"
+    },
+    {
+      "id": "/signals/SC.DHW1.HolidayModeNew",
+      "uri": "https://192.0.2.10:9443/signals/SC.DHW1.HolidayModeNew"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.CompressorStartTemp",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.CompressorStartTemp"
+    },
+    {
+      "id": "/signals/SC.HC1.DewPointTemperature",
+      "uri": "https://192.0.2.10:9443/signals/SC.HC1.DewPointTemperature"
+    },
+    {
+      "id": "/signals/VENTILATION.BasicFunction.VENT1.SupFanLevel",
+      "uri": "https://192.0.2.10:9443/signals/VENTILATION.BasicFunction.VENT1.SupFanLevel"
+    },
+    {
+      "id": "/signals/SRC.HC1.FlowCtrl.PumpRequest",
+      "uri": "https://192.0.2.10:9443/signals/SRC.HC1.FlowCtrl.PumpRequest"
+    },
+    {
+      "id": "/signals/SRC.CUHP.EM.UsedLowerFlowTempSetp",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.EM.UsedLowerFlowTempSetp"
+    },
+    {
+      "id": "/signals/SC.SeasonOpt.Mode",
+      "uri": "https://192.0.2.10:9443/signals/SC.SeasonOpt.Mode"
+    },
+    {
+      "id": "/signals/SC.HC1.HolidayMode",
+      "uri": "https://192.0.2.10:9443/signals/SC.HC1.HolidayMode"
+    },
+    {
+      "id": "/signals/VENTILATION.FrostProt.PreHeatPower",
+      "uri": "https://192.0.2.10:9443/signals/VENTILATION.FrostProt.PreHeatPower"
+    },
+    {
+      "id": "/signals/SC.DHW1.SD.ExtraActive",
+      "uri": "https://192.0.2.10:9443/signals/SC.DHW1.SD.ExtraActive"
+    },
+    {
+      "id": "/signals/SRC.CUHP.CH.HeatingSystemVolumeFlowLow",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.CH.HeatingSystemVolumeFlowLow"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.Stats.CompStartsCooling",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.Stats.CompStartsCooling"
+    },
+    {
+      "id": "/signals/SRC.IntDHW.CylTemp",
+      "uri": "https://192.0.2.10:9443/signals/SRC.IntDHW.CylTemp"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.DripPanHeater",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.DripPanHeater"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HMI.CompressorActive",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HMI.CompressorActive"
+    },
+    {
+      "id": "/signals/SRC.IntDHW.DHURunning",
+      "uri": "https://192.0.2.10:9443/signals/SRC.IntDHW.DHURunning"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.ElectricalHeaterStep1",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.ElectricalHeaterStep1"
+    },
+    {
+      "id": "/signals/SC.InstallationDate.Year",
+      "uri": "https://192.0.2.10:9443/signals/SC.InstallationDate.Year"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.ReceiverValveActual",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.ReceiverValveActual"
+    },
+    {
+      "id": "/signals/SRC.CUHP.CH.GSOState",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.CH.GSOState"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.CHPumpSpeed",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.CHPumpSpeed"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.FourwayValve",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.FourwayValve"
+    },
+    {
+      "id": "/signals/SRC.CUHP.DHW.ExternBlocked",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.DHW.ExternBlocked"
+    },
+    {
+      "id": "/signals/SRC.CUHP.CH.HC1PumpSpeed",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.CH.HC1PumpSpeed"
+    },
+    {
+      "id": "/signals/VENTILATION.BasicFunction.VENT1.CurOpMode",
+      "uri": "https://192.0.2.10:9443/signals/VENTILATION.BasicFunction.VENT1.CurOpMode"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.ElectricalHeaterStep2",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.ElectricalHeaterStep2"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.HeatUpSequence",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.HeatUpSequence"
+    },
+    {
+      "id": "/signals/SC.HC1.RTSD.PreventionEcoModeActive",
+      "uri": "https://192.0.2.10:9443/signals/SC.HC1.RTSD.PreventionEcoModeActive"
+    },
+    {
+      "id": "/signals/SRC.CUHP.SilentModeActive",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.SilentModeActive"
+    },
+    {
+      "id": "/signals/SC.InstallationDate.Day",
+      "uri": "https://192.0.2.10:9443/signals/SC.InstallationDate.Day"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.CompressorSpeedMax",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.CompressorSpeedMax"
+    },
+    {
+      "id": "/signals/SRC.CUHP.PC0ConnectedToLIN",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.PC0ConnectedToLIN"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.CompressorPower",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.CompressorPower"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.ExpansionValveActual",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.ExpansionValveActual"
+    },
+    {
+      "id": "/signals/SC.DHW1.HolidayAutoTD",
+      "uri": "https://192.0.2.10:9443/signals/SC.DHW1.HolidayAutoTD"
+    },
+    {
+      "id": "/signals/SRC.CHPumpModulation",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CHPumpModulation"
+    },
+    {
+      "id": "/signals/SRC.RelayStatus.CHPump",
+      "uri": "https://192.0.2.10:9443/signals/SRC.RelayStatus.CHPump"
+    },
+    {
+      "id": "/signals/SRC.CUHP.PC1ConnectedToLIN",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.PC1ConnectedToLIN"
+    },
+    {
+      "id": "/signals/SRC.RelayStatus.Fan",
+      "uri": "https://192.0.2.10:9443/signals/SRC.RelayStatus.Fan"
+    },
+    {
+      "id": "/signals/SRC.RelayStatus.GasValve2",
+      "uri": "https://192.0.2.10:9443/signals/SRC.RelayStatus.GasValve2"
+    },
+    {
+      "id": "/signals/SRC.RelayStatus.GasValve1",
+      "uri": "https://192.0.2.10:9443/signals/SRC.RelayStatus.GasValve1"
+    },
+    {
+      "id": "/signals/SC.HC1.FPD.Active",
+      "uri": "https://192.0.2.10:9443/signals/SC.HC1.FPD.Active"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.Stats.CompressorCooling",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.Stats.CompressorCooling"
+    },
+    {
+      "id": "/signals/SRC.CUHP.Cooling.Active",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.Cooling.Active"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.Stats.CompressorCH",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.Stats.CompressorCH"
+    },
+    {
+      "id": "/signals/SRC.HC1.FlowCtrl.PumpVolumeFlow",
+      "uri": "https://192.0.2.10:9443/signals/SRC.HC1.FlowCtrl.PumpVolumeFlow"
+    },
+    {
+      "id": "/signals/SRC.HC1.FlowCtrl.ReqFlowTemp",
+      "uri": "https://192.0.2.10:9443/signals/SRC.HC1.FlowCtrl.ReqFlowTemp"
+    },
+    {
+      "id": "/signals/SC.InstallationDate.Month",
+      "uri": "https://192.0.2.10:9443/signals/SC.InstallationDate.Month"
+    },
+    {
+      "id": "/signals/SRC.OutdoorTemp",
+      "uri": "https://192.0.2.10:9443/signals/SRC.OutdoorTemp"
+    },
+    {
+      "id": "/signals/SC.HC1.RTSD.CurrentRoomTempSetp",
+      "uri": "https://192.0.2.10:9443/signals/SC.HC1.RTSD.CurrentRoomTempSetp"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.ElectricalHeaterStep3",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.ElectricalHeaterStep3"
+    },
+    {
+      "id": "/signals/SRC.IntDHW.CircPumpStatus",
+      "uri": "https://192.0.2.10:9443/signals/SRC.IntDHW.CircPumpStatus"
+    },
+    {
+      "id": "/signals/SC.HC1.LocSeasonOpt.TimerStopHeatingSeason",
+      "uri": "https://192.0.2.10:9443/signals/SC.HC1.LocSeasonOpt.TimerStopHeatingSeason"
+    },
+    {
+      "id": "/signals/GWEEBUS.Status",
+      "uri": "https://192.0.2.10:9443/signals/GWEEBUS.Status"
+    },
+    {
+      "id": "/signals/SC.DampOutdTemp",
+      "uri": "https://192.0.2.10:9443/signals/SC.DampOutdTemp"
+    },
+    {
+      "id": "/signals/SRC.CUHP.CH.ExternBlocked",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.CH.ExternBlocked"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.CrankcaseHeater",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.CrankcaseHeater"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.DHWValve",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.DHWValve"
+    },
+    {
+      "id": "/signals/SRC.SystemPumpVolumeFlow",
+      "uri": "https://192.0.2.10:9443/signals/SRC.SystemPumpVolumeFlow"
+    },
+    {
+      "id": "/signals/SRC.IntFlowTemp",
+      "uri": "https://192.0.2.10:9443/signals/SRC.IntFlowTemp"
+    },
+    {
+      "id": "/signals/SRC.CUHP.PC2ConnectedToLIN",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.PC2ConnectedToLIN"
+    },
+    {
+      "id": "/signals/SRC.CUHP.EM.UsedUpperFlowTempSetp",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.EM.UsedUpperFlowTempSetp"
+    },
+    {
+      "id": "/signals/GWEEBUS.CommissioningStatus",
+      "uri": "https://192.0.2.10:9443/signals/GWEEBUS.CommissioningStatus"
+    },
+    {
+      "id": "/signals/SRC.CUHP.Stats.ControlUnit",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.Stats.ControlUnit"
+    },
+    {
+      "id": "/signals/SC.HC1.MaxFlowTempSetp",
+      "uri": "https://192.0.2.10:9443/signals/SC.HC1.MaxFlowTempSetp"
+    },
+    {
+      "id": "/signals/SRC.RelativeTime",
+      "uri": "https://192.0.2.10:9443/signals/SRC.RelativeTime"
+    },
+    {
+      "id": "/signals/SRC.IntDHW.ExtraActive",
+      "uri": "https://192.0.2.10:9443/signals/SRC.IntDHW.ExtraActive"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.Timer.TDWarmKeeping",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.Timer.TDWarmKeeping"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HMI.AddElectricActive",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HMI.AddElectricActive"
+    },
+    {
+      "id": "/signals/SRC.CUHP.Additional.ExternBlocked",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.Additional.ExternBlocked"
+    },
+    {
+      "id": "/signals/SRC.AirPurgeModeActive",
+      "uri": "https://192.0.2.10:9443/signals/SRC.AirPurgeModeActive"
+    },
+    {
+      "id": "/signals/SRC.CUHP.HP1.CompressorExtBlocked",
+      "uri": "https://192.0.2.10:9443/signals/SRC.CUHP.HP1.CompressorExtBlocked"
+    },
+    {
+      "id": "/signals/SC.HC1.FlowTempSetp",
+      "uri": "https://192.0.2.10:9443/signals/SC.HC1.FlowTempSetp"
+    }
+  ],
+  "writeable": 0
+}

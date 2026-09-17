@@ -1,0 +1,64 @@
+{
+  "id": "/system/basicInfo",
+  "type": "systeminfo",
+  "writeable": 0,
+  "status": "completed",
+  "timeStamp": "1784757681",
+  "gatewayId": "100000001",
+  "values": [
+    {
+      "ModuleHwIdentStr": "XCU_THH",
+      "Ver": "9.7.0-b47f76b6",
+      "ProductSerialNumber": "00000000000000000000000",
+      "Tok": "8",
+      "ProductName": "Compress CS5800iAW 12 MB",
+      "Id": "8",
+      "ModuleSerialNumber": "00000000000000000000000"
+    },
+    {
+      "ModuleHwIdentStr": "",
+      "Ver": "47.11-Field",
+      "Tok": "16",
+      "ProductName": "",
+      "ModuleSerialNumber": "",
+      "Id": "253"
+    },
+    {
+      "ModuleHwIdentStr": "RT 800",
+      "Id": "3",
+      "Ver": "21.04",
+      "Tok": "56",
+      "ModuleSerialNumber": "00000000000000000000000"
+    },
+    {
+      "ModuleHwIdentStr": "K40RF",
+      "Id": "17",
+      "Ver": "15.00",
+      "Tok": "75",
+      "ModuleSerialNumber": "00000000000000000000000"
+    },
+    {
+      "ModuleHwIdentStr": "MV200",
+      "Id": "231",
+      "Ver": "53.03",
+      "Tok": "81",
+      "ModuleSerialNumber": "00000000000000000000000"
+    },
+    {
+      "ModuleHwIdentStr": "XCU_SRH",
+      "Ver": "9.12.0-cddb8945",
+      "ProductSerialNumber": "00000000000000000000000",
+      "Tok": "8",
+      "ProductName": "AW 12 OR-T",
+      "Id": "65281",
+      "ModuleSerialNumber": "00000000000000000000000"
+    },
+    {
+      "ModuleHwIdentStr": "K40RF",
+      "Id": "17",
+      "Ver": "15.00.01",
+      "Tok": "72",
+      "ModuleSerialNumber": "00000000000000000000000"
+    }
+  ]
+}

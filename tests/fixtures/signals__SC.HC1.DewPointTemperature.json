@@ -1,0 +1,10 @@
+{
+  "id": "/signals/SC.HC1.DewPointTemperature",
+  "type": "integerValue",
+  "writeable": 0,
+  "value": 12,
+  "unitOfMeasure": "C",
+  "state": {
+    "INVALID": 255
+  }
+}

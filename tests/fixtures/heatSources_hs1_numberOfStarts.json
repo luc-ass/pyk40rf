@@ -1,0 +1,19 @@
+{
+  "id": "/heatSources/hs1/numberOfStarts",
+  "type": "emonValue",
+  "writeable": 0,
+  "values": [
+    {
+      "ch": 1500
+    },
+    {
+      "dhw": 679
+    },
+    {
+      "cooling": 97
+    },
+    {
+      "total": 2276
+    }
+  ]
+}

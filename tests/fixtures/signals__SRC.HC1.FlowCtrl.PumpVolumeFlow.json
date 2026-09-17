@@ -1,0 +1,10 @@
+{
+  "id": "/signals/SRC.HC1.FlowCtrl.PumpVolumeFlow",
+  "type": "integerValue",
+  "writeable": 0,
+  "value": 0,
+  "unitOfMeasure": "l/h",
+  "state": {
+    "LOW_FLOW": 65535
+  }
+}

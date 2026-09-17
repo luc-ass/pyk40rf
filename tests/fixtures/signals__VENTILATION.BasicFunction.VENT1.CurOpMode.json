@@ -1,0 +1,13 @@
+{
+  "id": "/signals/VENTILATION.BasicFunction.VENT1.CurOpMode",
+  "type": "integerValue",
+  "writeable": 0,
+  "value": 1,
+  "state": {
+    "SHORT": 3,
+    "UNDEFINED": 0,
+    "MANUAL": 1,
+    "HOLIDAY": 4,
+    "TIME": 2
+  }
+}

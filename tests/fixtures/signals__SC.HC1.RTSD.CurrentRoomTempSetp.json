@@ -1,0 +1,10 @@
+{
+  "id": "/signals/SC.HC1.RTSD.CurrentRoomTempSetp",
+  "type": "floatValue",
+  "writeable": 0,
+  "value": 0.0,
+  "unitOfMeasure": "C",
+  "state": {
+    "OFF": 0.0
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "id": "/gateway/wifi/apList",
+  "type": "apList",
+  "writeable": 0,
+  "recordable": 0,
+  "values": []
+}

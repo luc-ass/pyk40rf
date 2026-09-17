@@ -1,0 +1,10 @@
+{
+  "id": "/signals/SRC.HC1.FlowCtrl.PumpRequest",
+  "type": "integerValue",
+  "writeable": 0,
+  "value": 0,
+  "state": {
+    "ON": 1,
+    "OFF": 0
+  }
+}

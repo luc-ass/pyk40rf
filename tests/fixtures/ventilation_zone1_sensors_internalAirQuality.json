@@ -1,0 +1,12 @@
+{
+  "id": "/ventilation/zone1/sensors/internalAirQuality",
+  "type": "floatValue",
+  "writeable": 0,
+  "value": 1655.0,
+  "unitOfMeasure": "ppm",
+  "state": [
+    {
+      "invalid": 65535.0
+    }
+  ]
+}

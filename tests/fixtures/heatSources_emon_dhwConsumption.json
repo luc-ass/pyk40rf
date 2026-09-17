@@ -1,0 +1,17 @@
+{
+  "id": "/heatSources/emon/dhwConsumption",
+  "type": "emonValue",
+  "writeable": 0,
+  "unit": "kWh",
+  "values": [
+    {
+      "outputProduced": 4294.98
+    },
+    {
+      "eheater": 0.15
+    },
+    {
+      "compressor": 1707.29
+    }
+  ]
+}

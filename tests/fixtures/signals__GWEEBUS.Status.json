@@ -1,0 +1,19 @@
+{
+  "id": "/signals/GWEEBUS.Status",
+  "type": "integerValue",
+  "writeable": 0,
+  "value": 6,
+  "state": {
+    "OHPCF_Active": 8,
+    "Internal_Error": 2,
+    "No_LAN_Connection": 3,
+    "No_EEBUS_No_Trust": 10,
+    "No_UpdateServer_Connection": 4,
+    "Power_Limitation_Active": 9,
+    "Not_Commissioned": 6,
+    "No_EEBUS_Connection": 7,
+    "No_EEBUS_No_UseCase_Active": 11,
+    "No_HP_Connection": 5,
+    "Ok": 1
+  }
+}

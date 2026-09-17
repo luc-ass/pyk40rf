@@ -1,0 +1,12 @@
+{
+  "id": "/heatSources/hs1/pumpVolumeFlow",
+  "type": "integerValue",
+  "writeable": 0,
+  "value": 0,
+  "unitOfMeasure": "l/h",
+  "state": [
+    {
+      "lowflow": 65535
+    }
+  ]
+}

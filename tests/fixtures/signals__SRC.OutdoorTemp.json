@@ -1,0 +1,11 @@
+{
+  "id": "/signals/SRC.OutdoorTemp",
+  "type": "floatValue",
+  "writeable": 0,
+  "value": 14.5,
+  "unitOfMeasure": "C",
+  "state": {
+    "NA_OPEN": -3276.8,
+    "NA_SHORT": 3276.7
+  }
+}

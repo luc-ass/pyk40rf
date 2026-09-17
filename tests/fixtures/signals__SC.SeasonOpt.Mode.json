@@ -1,0 +1,11 @@
+{
+  "id": "/signals/SC.SeasonOpt.Mode",
+  "type": "integerValue",
+  "writeable": 0,
+  "value": 1,
+  "state": {
+    "IDLE": 2,
+    "COOLING": 3,
+    "HEATING": 1
+  }
+}

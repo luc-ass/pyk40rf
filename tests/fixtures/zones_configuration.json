@@ -1,0 +1,28 @@
+{
+  "id": "/zones/configuration",
+  "type": "configData",
+  "writeable": 0,
+  "values": {
+    "availableIcons": {
+      "type": "arrayData",
+      "allowedValues": [
+        "KITCHEN",
+        "LIVING_ROOM",
+        "DINING_ROOM",
+        "BEDROOM",
+        "MASTER_ROOM",
+        "CHILDRENS_ROOM",
+        "BATHROOM",
+        "OFFICE",
+        "HALLWAY",
+        "HOBBY_ROOM",
+        "LAUNDRY",
+        "LIBRARY"
+      ]
+    },
+    "maxSupportedZones": {
+      "type": "integerValue",
+      "value": 16
+    }
+  }
+}
