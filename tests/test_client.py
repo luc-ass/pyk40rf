@@ -385,3 +385,40 @@ async def test_client_works_as_a_context_manager(
         assert client.host == HOST
     # The injected session must outlive the client.
     assert not session.closed
+
+
+class TestErrorDetail:
+    """A rejection the user cannot diagnose is a dead end."""
+
+    async def test_the_gateways_reason_reaches_the_error(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        gateway.route("/gateway/brand", status=403, payload={"error": "token_expired"})
+        with pytest.raises(K40AuthError, match="token_expired"):
+            await client.async_get("/gateway/brand")
+
+    async def test_the_status_code_is_named(self, gateway: FakeGateway, client: K40Client) -> None:
+        gateway.route("/gateway/brand", status=401, payload={})
+        with pytest.raises(K40AuthError, match="401"):
+            await client.async_get("/gateway/brand")
+
+    async def test_a_silent_rejection_still_names_the_path(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        gateway.route("/gateway/brand", status=401, body="", content_type="text/plain")
+        with pytest.raises(K40AuthError, match="/gateway/brand"):
+            await client.async_get("/gateway/brand")
+
+    async def test_other_failures_carry_the_body_too(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        gateway.route("/gateway/brand", status=500, payload={"error": "overloaded"})
+        with pytest.raises(K40ResponseError, match="overloaded"):
+            await client.async_get("/gateway/brand")
+
+    async def test_the_documented_accept_header_is_sent(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        gateway.route("/gateway/brand", payload={"id": "/x", "type": "stringValue", "value": "B"})
+        await client.async_get("/gateway/brand")
+        assert gateway.accepts == ["application/json"]

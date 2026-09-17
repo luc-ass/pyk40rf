@@ -207,7 +207,12 @@ class K40Client:
         url = URL.build(scheme="https", host=self._host, port=self._data_port).with_path(
             path if path.startswith("/") else f"/{path}"
         )
-        headers = {"Authorization": f"Bearer {self._token}"}
+        headers = {
+            "Authorization": f"Bearer {self._token}",
+            # The gateway is an embedded HTTP server; ask for exactly what the
+            # documented client asks for rather than aiohttp's default "*/*".
+            "Accept": "application/json",
+        }
 
         try:
             async with (
@@ -223,9 +228,14 @@ class K40Client:
                 if response.status == 404:
                     raise K40NotFoundError(f"{path} does not exist on {self._host}")
                 if response.status in (401, 403):
-                    raise K40AuthError(f"token rejected for {path} (HTTP {response.status})")
+                    raise K40AuthError(
+                        f"{path}: gateway rejected the token "
+                        f"(HTTP {response.status}{await _detail(response)})"
+                    )
                 if response.status >= 400:
-                    raise K40ResponseError(f"{path} failed with HTTP {response.status}")
+                    raise K40ResponseError(
+                        f"{path} failed with HTTP {response.status}{await _detail(response)}"
+                    )
                 return await self._read_json(response, url)
         except aiohttp.ClientError as err:
             raise K40ConnectionError(f"cannot reach {self._host}: {err}") from err
@@ -398,6 +408,20 @@ class K40Client:
                 f"{url.path} answered with {type(body).__name__}, expected an object"
             )
         return body
+
+
+async def _detail(response: aiohttp.ClientResponse) -> str:
+    """Quote what the gateway said, so a rejection can be diagnosed.
+
+    An embedded device rarely explains itself, but when it does the reason is
+    the whole answer -- and without it "the token was rejected" is a dead end
+    for whoever has to debug it.
+    """
+    try:
+        body = (await response.text())[:200].strip()
+    except (UnicodeDecodeError, aiohttp.ClientError, TimeoutError):
+        return ""
+    return f": {body}" if body else ""
 
 
 def _error_of(body: JsonDict) -> str | None:

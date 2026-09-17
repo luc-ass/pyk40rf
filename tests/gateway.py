@@ -35,6 +35,7 @@ class FakeGateway:
     routes: dict[str, Route] = field(default_factory=dict)
     paths: list[str] = field(default_factory=list)
     auth_headers: list[str | None] = field(default_factory=list)
+    accepts: list[str | None] = field(default_factory=list)
     queries: list[dict[str, str]] = field(default_factory=list)
     forms: list[dict[str, str]] = field(default_factory=list)
     _runner: web.AppRunner | None = field(default=None, repr=False)
@@ -75,6 +76,7 @@ class FakeGateway:
     async def _handle(self, request: web.Request) -> web.StreamResponse:
         self.paths.append(request.path)
         self.auth_headers.append(request.headers.get("Authorization"))
+        self.accepts.append(request.headers.get("Accept"))
         self.queries.append(dict(request.query))
         if request.method == "POST":
             # The body has to be drained here; it is gone once the handler returns.
