@@ -7,10 +7,41 @@ dependency.
 From firmware `15.00.01` the gateway serves a token-authenticated REST API on
 the local network. This library speaks it.
 
+> [!WARNING]
+> **Beta — version 0.1.0.**
+>
+> Verified against exactly one gateway and one heating system. The API covers
+> installations this library has never seen: solar circuits, pool heating,
+> cascades of up to six heat sources. Those paths follow the published
+> specification but are untested.
+>
+> The public interface may still change between 0.x releases. Pin an exact
+> version.
+
+> [!NOTE]
+> **Not affiliated with Bosch.**
+>
+> This is an independent, community-built project. It is not affiliated with,
+> endorsed by, supported by or otherwise connected to Bosch Thermotechnik GmbH,
+> the Bosch Home Comfort Group, or Buderus. "Bosch", "Buderus" and
+> "Connect-Key" are trademarks of their respective owners and appear here only
+> to say which hardware this library talks to.
+>
+> It is built against the OpenAPI description Bosch publishes at
+> [bosch-home-comfort/api-docs](https://github.com/bosch-home-comfort/api-docs)
+> (Apache-2.0), extended by what a live gateway reports for the `/signals`
+> branch, which that description does not cover. No firmware was modified and
+> nothing is bypassed: the gateway hands out the access token itself, to
+> whoever can press its buttons.
+>
+> Using it is at your own risk. See [LICENSE](LICENSE).
+
 ## Install
 
+Not on PyPI yet:
+
 ```bash
-pip install pyk40rf
+pip install git+https://github.com/luc-ass/pyk40rf@v0.1.0
 ```
 
 ## Use
