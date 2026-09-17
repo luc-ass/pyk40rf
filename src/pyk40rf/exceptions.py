@@ -6,6 +6,7 @@ __all__ = [
     "K40AuthError",
     "K40ConnectionError",
     "K40Error",
+    "K40ForbiddenError",
     "K40NotFoundError",
     "K40ProximityError",
     "K40ResponseError",
@@ -30,6 +31,17 @@ class K40ProximityError(K40AuthError):
     The gateway answers HTTP 412 ``physical_proximity_unproven`` unless both
     conditions hold: the WLAN + radio buttons were pressed within the last few
     minutes, and the request originates from the gateway's own subnet.
+    """
+
+
+class K40ForbiddenError(K40Error):
+    """The gateway refused this resource (HTTP 403).
+
+    Deliberately *not* an :class:`K40AuthError`. The gateway answers 403 for
+    paths it will not serve to anyone -- a resource outside the published
+    specification, for instance -- while a token it no longer accepts gets a
+    401. Treating the two alike lets one refused resource among hundreds look
+    like a revoked token and take the whole connection down.
     """
 
 

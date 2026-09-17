@@ -80,29 +80,33 @@ VENTILATION_ZONE_IDS: Final = ("zone1",)
 #: couple of resources that it would have, and taking any 200 as a yes. Several
 #: per family, because installations differ in kind as well as in count: a gas
 #: boiler has no compressor, a heating circuit may report no humidity.
+#:
+#: Every path here must exist in the published specification. A path that does
+#: not, the gateway answers with 403 rather than 404 -- which is how an earlier
+#: version of this list took a whole installation down.
 PROBE_PATHS: Final = {
     "heat_sources": (
         "/heatSources/{id}/numberOfStarts",
         "/heatSources/{id}/pumpVolumeFlow",
-        "/heatSources/{id}/actualPower",
+        "/heatSources/{id}/heatPumpType",
     ),
     "heating_circuits": (
         "/heatingCircuits/{id}/currentRoomSetpoint",
-        "/heatingCircuits/{id}/operationMode",
         "/heatingCircuits/{id}/overallStatus",
+        "/heatingCircuits/{id}/maxFlowTemp",
     ),
     "dhw_circuits": (
         "/dhwCircuits/{id}/actualTemp",
-        "/dhwCircuits/{id}/operationMode",
         "/dhwCircuits/{id}/currentSetpoint",
+        "/dhwCircuits/{id}/overallStatus",
     ),
     "solar_circuits": (
         "/solarCircuits/{id}/collectorTemperature",
         "/solarCircuits/{id}/pumpModulation",
     ),
     "ventilation_zones": (
-        "/ventilation/{id}/operationMode",
         "/ventilation/{id}/exhaustFanLevel",
+        "/ventilation/{id}/applianceRunTime",
     ),
     "zones": (
         "/zones/{id}/averageCurrentTemperature",

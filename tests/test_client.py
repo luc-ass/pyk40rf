@@ -11,6 +11,7 @@ from pyk40rf import (
     K40AuthError,
     K40Client,
     K40ConnectionError,
+    K40ForbiddenError,
     K40NotFoundError,
     K40ProximityError,
     K40ResponseError,
@@ -297,7 +298,7 @@ class TestDiscovery:
             "/heatSources/hs1/numberOfStarts",
             "/heatingCircuits/hc1/currentRoomSetpoint",
             "/dhwCircuits/dhw1/actualTemp",
-            "/ventilation/zone1/operationMode",
+            "/ventilation/zone1/exhaustFanLevel",
         ):
             gateway.route(path, payload={"id": path, "type": "integerValue", "value": 1})
         gateway.route("/signals", payload=load("signals"))
@@ -317,8 +318,12 @@ class TestDiscovery:
     async def test_any_probe_path_is_enough(self, gateway: FakeGateway, client: K40Client) -> None:
         # A gas boiler has no pumpVolumeFlow; the later probe path still finds it.
         gateway.route(
-            "/heatSources/hs2/actualPower",
-            payload={"id": "/heatSources/hs2/actualPower", "type": "floatValue", "value": 4.0},
+            "/heatSources/hs2/heatPumpType",
+            payload={
+                "id": "/heatSources/hs2/heatPumpType",
+                "type": "stringValue",
+                "value": "airWater",
+            },
         )
         installation = await client.async_discover_installation()
         assert installation.heat_sources == ("hs2",)
@@ -393,7 +398,7 @@ class TestErrorDetail:
     async def test_the_gateways_reason_reaches_the_error(
         self, gateway: FakeGateway, client: K40Client
     ) -> None:
-        gateway.route("/gateway/brand", status=403, payload={"error": "token_expired"})
+        gateway.route("/gateway/brand", status=401, payload={"error": "token_expired"})
         with pytest.raises(K40AuthError, match="token_expired"):
             await client.async_get("/gateway/brand")
 
@@ -422,3 +427,70 @@ class TestErrorDetail:
         gateway.route("/gateway/brand", payload={"id": "/x", "type": "stringValue", "value": "B"})
         await client.async_get("/gateway/brand")
         assert gateway.accepts == ["application/json"]
+
+
+class TestForbiddenResources:
+    """403 is not 401, and conflating them took a live installation down."""
+
+    async def test_a_refused_resource_is_not_an_auth_failure(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        gateway.route("/ventilation/zone1/operationMode", status=403, payload={})
+        with pytest.raises(K40ForbiddenError):
+            await client.async_get("/ventilation/zone1/operationMode")
+
+    async def test_forbidden_does_not_derive_from_auth_error(self) -> None:
+        # A revoked token must trigger reauthentication; a refused resource
+        # must not. Subclassing would make them indistinguishable to callers.
+        assert not issubclass(K40ForbiddenError, K40AuthError)
+
+    async def test_a_refused_resource_counts_as_absent_when_probing(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        gateway.route("/ventilation/zone1/exhaustFanLevel", status=403, payload={})
+        assert not await client.async_probe("/ventilation/zone1/exhaustFanLevel")
+
+    async def test_a_refused_resource_is_skipped_in_a_batch(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        """One refused resource among hundreds must not sink the poll."""
+        gateway.route(
+            "/heatSources/returnTemperature", payload=load("heatSources_returnTemperature")
+        )
+        gateway.route("/ventilation/zone1/operationMode", status=403, payload={})
+
+        resources = await client.async_get_many(
+            ["/heatSources/returnTemperature", "/ventilation/zone1/operationMode"]
+        )
+        assert set(resources) == {"/heatSources/returnTemperature"}
+
+    async def test_discovery_survives_a_refused_probe_path(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        """This is the failure that was reported from a live gateway."""
+        gateway.route("/ventilation/zone1/exhaustFanLevel", status=403, payload={})
+        gateway.route("/ventilation/zone1/applianceRunTime", status=403, payload={})
+        gateway.route(
+            "/heatSources/hs1/numberOfStarts",
+            payload={"id": "/heatSources/hs1/numberOfStarts", "type": "integerValue", "value": 1},
+        )
+
+        installation = await client.async_discover_installation()
+
+        assert installation.heat_sources == ("hs1",)
+        assert installation.ventilation_zones == ()
+
+    async def test_a_revoked_token_still_raises_auth(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        gateway.route("/gateway/brand", status=401, payload={"error": "invalid_token"})
+        with pytest.raises(K40AuthError, match="invalid_token"):
+            await client.async_get("/gateway/brand")
+
+    async def test_a_revoked_token_sinks_a_batch(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        """Unlike 403, a 401 must propagate so reauthentication is triggered."""
+        gateway.route("/a", status=401, payload={})
+        with pytest.raises(K40AuthError):
+            await client.async_get_many(["/a"])

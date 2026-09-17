@@ -29,6 +29,7 @@ from .exceptions import (
     K40AuthError,
     K40ConnectionError,
     K40Error,
+    K40ForbiddenError,
     K40NotFoundError,
     K40ProximityError,
     K40ResponseError,
@@ -198,6 +199,7 @@ class K40Client:
 
         Raises:
             K40NotFoundError: the installation does not have this resource.
+            K40ForbiddenError: the gateway will not serve this resource.
             K40AuthError: the token is missing or no longer accepted.
             K40ConnectionError: the gateway was unreachable.
         """
@@ -227,10 +229,13 @@ class K40Client:
             ):
                 if response.status == 404:
                     raise K40NotFoundError(f"{path} does not exist on {self._host}")
-                if response.status in (401, 403):
+                if response.status == 403:
+                    raise K40ForbiddenError(
+                        f"{path}: gateway refuses this resource (HTTP 403{await _detail(response)})"
+                    )
+                if response.status == 401:
                     raise K40AuthError(
-                        f"{path}: gateway rejected the token "
-                        f"(HTTP {response.status}{await _detail(response)})"
+                        f"{path}: gateway rejected the token (HTTP 401{await _detail(response)})"
                     )
                 if response.status >= 400:
                     raise K40ResponseError(
@@ -259,8 +264,8 @@ class K40Client:
 
         resources: dict[str, Resource] = {}
         for path, result in zip(paths, results, strict=True):
-            if isinstance(result, K40NotFoundError):
-                _LOGGER.debug("%s is not present on this installation", path)
+            if isinstance(result, (K40NotFoundError, K40ForbiddenError)):
+                _LOGGER.debug("%s is not available on this installation: %s", path, result)
                 continue
             if isinstance(result, BaseException):
                 raise result
@@ -268,10 +273,15 @@ class K40Client:
         return resources
 
     async def async_probe(self, path: str) -> bool:
-        """Whether ``path`` exists on this installation."""
+        """Whether this installation serves ``path``.
+
+        A refusal counts as absent: the gateway answers 403 for resources it
+        will not serve at all, and for our purposes that is the same as not
+        having them.
+        """
         try:
             await self.async_get_raw(path)
-        except K40NotFoundError:
+        except (K40NotFoundError, K40ForbiddenError):
             return False
         except K40Error:
             raise

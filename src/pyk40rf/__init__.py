@@ -34,6 +34,7 @@ from .exceptions import (
     K40AuthError,
     K40ConnectionError,
     K40Error,
+    K40ForbiddenError,
     K40NotFoundError,
     K40ProximityError,
     K40ResponseError,
@@ -55,7 +56,7 @@ from .models import (
 )
 from .parser import is_error_label, parse_resource, parse_system_info
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 __all__ = [
     "AUTH_PORT",
@@ -81,6 +82,7 @@ __all__ = [
     "K40Client",
     "K40ConnectionError",
     "K40Error",
+    "K40ForbiddenError",
     "K40NotFoundError",
     "K40ProximityError",
     "K40ResponseError",
