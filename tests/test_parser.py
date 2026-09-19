@@ -106,6 +106,34 @@ class TestSignalEnums:
         assert resource.options == ("UNDEFINED", "MANUAL", "TIME", "HOLIDAY")
         assert resource.label == "MANUAL"
 
+    def test_a_measurement_is_not_an_enum_even_with_a_label_map(self) -> None:
+        # SC.HC1.FlowTempSetp is a flow setpoint in C whose map names the two
+        # codes it sends while idle. Reading it as an enumeration would null
+        # every real setpoint, since 35 C matches no label.
+        payload = load("signals__SC.HC1.FlowTempSetp") | {"value": 35}
+        resource = parse_resource(payload)
+        assert isinstance(resource, NumericResource)
+        assert resource.value == 35
+        assert resource.unit == "C"
+        assert not resource.is_enum
+        assert resource.options == ()
+
+    def test_a_measurements_code_replaces_the_reading(self) -> None:
+        resource = parse_resource(load("signals__SC.HC1.FlowTempSetp"))
+        assert isinstance(resource, NumericResource)
+        assert resource.value is None
+        assert resource.label == "OFF_HEAT"
+        assert not resource.is_error
+
+    def test_a_disabled_setpoint_does_not_report_zero_degrees(self) -> None:
+        # {"OFF": 0.0} on a room setpoint: 0 C is the code for off, not a
+        # temperature anyone should see on a dashboard.
+        resource = parse_resource(load("signals__SC.HC1.RTSD.CurrentRoomTempSetp"))
+        assert isinstance(resource, NumericResource)
+        assert resource.value is None
+        assert resource.label == "OFF"
+        assert not resource.is_enum
+
     def test_options_are_ordered_by_value(self) -> None:
         resource = parse_resource(load("signals__GWEEBUS.Status"))
         assert isinstance(resource, NumericResource)

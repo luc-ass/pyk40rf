@@ -56,6 +56,8 @@ WANTED = [
     "signals/VENTILATION.BasicFunction.VENT1.CurOpMode.json",
     "signals/GWEEBUS.Status.json",
     "signals/SC.HC1.RTSD.CurrentRoomTempSetp.json",
+    # a measurement whose label map names codes, not an enumeration
+    "signals/SC.HC1.FlowTempSetp.json",
 ]
 
 FAKE_GATEWAY_ID = "100000001"

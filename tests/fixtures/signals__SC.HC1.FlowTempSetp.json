@@ -1,0 +1,11 @@
+{
+  "id": "/signals/SC.HC1.FlowTempSetp",
+  "type": "integerValue",
+  "writeable": 0,
+  "value": 0,
+  "unitOfMeasure": "C",
+  "state": {
+    "OFF_COOL": 90,
+    "OFF_HEAT": 0
+  }
+}

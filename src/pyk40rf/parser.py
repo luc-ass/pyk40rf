@@ -12,6 +12,16 @@ Two notes on the ``state`` field, because it does not mean one thing:
   away, so they are decoded to their label instead. Only labels that name a
   fault (``NA_OPEN``, ``LOW_FLOW``, ``INVALID``, ...) null the value.
 
+The dict form has a second meaning, and the unit tells them apart: where the
+resource carries a ``unitOfMeasure`` it is a measurement, and the map names
+the codes that reading can take *instead of* a value -- ``SC.HC1.FlowTempSetp``
+is a flow setpoint in C that reports ``{"OFF_COOL": 90, "OFF_HEAT": 0}`` while
+the circuit is idle. Calling that an enumeration would be wrong in the only
+case that matters: a real 35 C setpoint matches no label, and the reading
+would be thrown away exactly while the heating runs. So a measurement is read
+like the list form -- the label replaces the value, it does not classify it.
+An enumeration never carries a unit.
+
 The shape is what decides, not the path, so a signal that ever ships the list
 form -- or a static endpoint the dict form -- is still read correctly.
 """
@@ -63,17 +73,27 @@ def _parse_sentinel_list(
     state: list[Any], value: float
 ) -> tuple[float | int | None, str | None, str | None]:
     """Read the static-endpoint form: a list of single-entry sentinel dicts."""
-    for entry in state:
-        if not isinstance(entry, dict):
+    pairs = {
+        label: sentinel
+        for entry in state
+        if isinstance(entry, dict)
+        for label, sentinel in entry.items()
+    }
+    return _parse_special_values(pairs, value)
+
+
+def _parse_special_values(
+    state: dict[str, Any], value: float
+) -> tuple[float | int | None, str | None, str | None]:
+    """Read a measurement's label map: codes that stand in for a reading."""
+    for label, sentinel in state.items():
+        if not _matches(value, sentinel):
             continue
-        for label, sentinel in entry.items():
-            if not _matches(value, sentinel):
-                continue
-            # Every label in this form marks a non-measurement, including the
-            # rare non-fault ones such as "off" on a disabled setpoint.
-            if is_error_label(label):
-                return None, None, label
-            return None, label, None
+        # Every label in this form marks a non-measurement, including the
+        # rare non-fault ones such as "off" on a disabled setpoint.
+        if is_error_label(label):
+            return None, None, label
+        return None, label, None
     return value, None, None
 
 
@@ -117,6 +137,7 @@ def _parse_numeric(payload: JsonDict) -> NumericResource:
         )
 
     state = payload.get("state")
+    unit = payload.get("unitOfMeasure") or payload.get("unit")
     value: float | int | None = raw_value
     label: str | None = None
     error_label: str | None = None
@@ -125,9 +146,10 @@ def _parse_numeric(payload: JsonDict) -> NumericResource:
     if isinstance(state, list):
         value, label, error_label = _parse_sentinel_list(state, raw_value)
     elif isinstance(state, dict):
-        value, label, error_label, options = _parse_enum_map(state, raw_value)
-
-    unit = payload.get("unitOfMeasure") or payload.get("unit")
+        if unit:
+            value, label, error_label = _parse_special_values(state, raw_value)
+        else:
+            value, label, error_label, options = _parse_enum_map(state, raw_value)
     return NumericResource(
         id=str(payload.get("id", "")),
         type=str(payload["type"]),
