@@ -8,12 +8,13 @@ From firmware `15.00.01` the gateway serves a token-authenticated REST API on
 the local network. This library speaks it.
 
 > [!WARNING]
-> **Beta — version 0.1.0.**
+> **Beta — version 0.1.4.**
 >
-> Verified against exactly one gateway and one heating system. The API covers
-> installations this library has never seen: solar circuits, pool heating,
-> cascades of up to six heat sources. Those paths follow the published
-> specification but are untested.
+> Verified against two gateways and two heating systems, both air-to-water
+> heat pumps with a single heating circuit — one Bosch, one Buderus. The API
+> covers installations this library has never seen: solar circuits, pool
+> heating, cascades of up to six heat sources. Those paths follow the
+> published specification but are untested.
 >
 > The public interface may still change between 0.x releases. Pin an exact
 > version.
@@ -41,7 +42,7 @@ the local network. This library speaks it.
 Not on PyPI yet:
 
 ```bash
-pip install git+https://github.com/luc-ass/pyk40rf@v0.1.0
+pip install git+https://github.com/luc-ass/pyk40rf@v0.1.4
 ```
 
 ## Use
@@ -96,7 +97,7 @@ parse_sticker_qr("V:1;L:100000001;P:aaaa-bbbb-cccc-dddd;MAC:...;N:K40RF")
 
 ## Two things that are easy to get wrong
 
-### `state` means two different things
+### `state` means three different things
 
 On the **static endpoints** it is a list of error sentinels, and a reading
 equal to one of them is not a measurement:
@@ -108,8 +109,8 @@ equal to one of them is not a measurement:
 Those become `value=None` with `error_label` set, so nothing ever reports
 -32768 °C.
 
-On the **`/signals` branch** it is a *label map* -- an enumeration, not a fault
-list:
+On the **`/signals` branch** it is a *label map*, and the same JSON shape has
+two meanings. On a signal with no unit it is an enumeration, not a fault list:
 
 ```json
 {"value": 1, "state": {"HEATING": 1, "COOLING": 3, "IDLE": 2}}
@@ -124,9 +125,28 @@ resource.options  # ("HEATING", "IDLE", "COOLING")
 resource.is_enum  # True
 ```
 
+On a signal that **carries a unit** the same map names the codes the reading
+takes instead of a value -- it is a measurement, not an enumeration:
+
+```json
+{"value": 0, "unitOfMeasure": "C", "state": {"OFF_COOL": 90, "OFF_HEAT": 0}}
+```
+
+That is a flow setpoint in °C, reporting that the circuit is off. Read as an
+enumeration it looks right at rest and then returns nothing for every real
+setpoint, because 35 °C matches no label. So the label replaces the value here,
+exactly as in the sentinel list:
+
+```python
+resource.value    # None, while the circuit is idle
+resource.label    # "OFF_HEAT"
+resource.is_enum  # False -- it is a temperature
+```
+
 Labels that name a fault (`NA_OPEN`, `NA_SHORT`, `LOW_FLOW`, `INVALID`, ...)
-still null the value even inside a label map, and are kept out of `options`.
-The *shape* of the field decides, not the path.
+null the value in every form, and are kept out of `options`. The *shape* of the
+field decides between the list and the map, and the unit decides what the map
+means -- neither is a property of the path.
 
 ### Installations differ
 
