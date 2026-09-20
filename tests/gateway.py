@@ -25,6 +25,9 @@ class Route:
     payload: Any = None
     status: int = 200
     body: str | None = None
+    #: Bytes served verbatim, for answers no encoding can render: a real
+    #: gateway puts raw binary inside a JSON string.
+    raw: bytes | None = None
     content_type: str = "application/json"
 
 
@@ -85,6 +88,10 @@ class FakeGateway:
         route = self.routes.get(request.path)
         if route is None:
             return web.json_response({"error": "not_found"}, status=404)
+        if route.raw is not None:
+            return web.Response(
+                body=route.raw, status=route.status, content_type=route.content_type
+            )
         if route.body is not None:
             return web.Response(
                 text=route.body, status=route.status, content_type=route.content_type

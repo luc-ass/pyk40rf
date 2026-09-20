@@ -33,6 +33,7 @@ from .exceptions import (
     K40NotFoundError,
     K40ProximityError,
     K40ResponseError,
+    K40UnreadableError,
 )
 from .models import (
     Installation,
@@ -256,11 +257,22 @@ class K40Client:
         return parse_resource(await self.async_get_raw(path, params=params))
 
     async def async_get_many(self, paths: list[str]) -> dict[str, Resource]:
-        """GET several resources concurrently, skipping those that 404.
+        """GET several resources concurrently, skipping those it cannot use.
 
         Concurrency is capped (see ``concurrency``) because a full poll is
-        dozens of requests against a small embedded device. Missing resources
-        are omitted from the result; every other failure propagates.
+        dozens of requests against a small embedded device.
+
+        A resource that is missing, refused, or answered with something no
+        client can read is left out of the result; a failure of the
+        conversation itself -- the connection, the token -- propagates, because
+        it says nothing about one path and everything about all of them.
+
+        That middle case is not hypothetical. A gateway with EEBUS commissioned
+        serves ``/signals/GWEEBUS.CEM.SKI`` with the raw bytes of the key
+        identifier inside a JSON string, which is not valid UTF-8 and not valid
+        JSON under any encoding. One such path used to cost the caller all the
+        others: 120 signals lost to one field that no firmware update is going
+        to fix.
         """
         results = await asyncio.gather(
             *(self.async_get(path) for path in paths), return_exceptions=True
@@ -270,6 +282,11 @@ class K40Client:
         for path, result in zip(paths, results, strict=True):
             if isinstance(result, (K40NotFoundError, K40ForbiddenError)):
                 _LOGGER.debug("%s is not available on this installation: %s", path, result)
+                continue
+            if isinstance(result, K40UnreadableError):
+                _LOGGER.warning(
+                    "%s answered with something unreadable, skipping it: %s", path, result
+                )
                 continue
             if isinstance(result, BaseException):
                 raise result
@@ -416,9 +433,9 @@ class K40Client:
         try:
             body = await response.json(content_type=None)
         except ValueError as err:
-            raise K40ResponseError(f"{url.path} did not answer with JSON: {err}") from err
+            raise K40UnreadableError(f"{url.path} did not answer with JSON: {err}") from err
         if not isinstance(body, dict):
-            raise K40ResponseError(
+            raise K40UnreadableError(
                 f"{url.path} answered with {type(body).__name__}, expected an object"
             )
         return body
