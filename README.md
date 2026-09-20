@@ -8,7 +8,7 @@ From firmware `15.00.01` the gateway serves a token-authenticated REST API on
 the local network. This library speaks it.
 
 > [!WARNING]
-> **Beta — version 0.1.4.**
+> **Beta — version 0.1.5.**
 >
 > Verified against two gateways and two heating systems, both air-to-water
 > heat pumps with a single heating circuit — one Bosch, one Buderus. The API
@@ -42,7 +42,7 @@ the local network. This library speaks it.
 Not on PyPI yet:
 
 ```bash
-pip install git+https://github.com/luc-ass/pyk40rf@v0.1.4
+pip install git+https://github.com/luc-ass/pyk40rf@v0.1.5
 ```
 
 ## Use
