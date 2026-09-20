@@ -38,6 +38,7 @@ from .exceptions import (
     K40NotFoundError,
     K40ProximityError,
     K40ResponseError,
+    K40UnreadableError,
 )
 from .models import (
     EnergyResource,
@@ -86,6 +87,7 @@ __all__ = [
     "K40NotFoundError",
     "K40ProximityError",
     "K40ResponseError",
+    "K40UnreadableError",
     "NumericResource",
     "RawResource",
     "RecordingBucket",

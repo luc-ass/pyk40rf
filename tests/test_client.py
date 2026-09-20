@@ -15,6 +15,7 @@ from pyk40rf import (
     K40NotFoundError,
     K40ProximityError,
     K40ResponseError,
+    K40UnreadableError,
     NumericResource,
     RecordingResource,
 )
@@ -222,6 +223,33 @@ class TestBatchReading:
         gateway.route("/b", status=500, payload={"error": "boom"})
         with pytest.raises(K40ResponseError):
             await client.async_get_many(["/a", "/b"])
+
+    async def test_an_unreadable_body_is_skipped_not_fatal(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        """Reported from a live gateway with EEBUS commissioned.
+
+        ``/signals/GWEEBUS.CEM.SKI`` serves the raw bytes of the key identifier
+        inside a JSON string. It is not valid UTF-8, it will not become valid,
+        and it used to cost the caller the other 119 signals of the poll.
+        """
+        gateway.route("/a", payload={"id": "/a", "type": "stringValue", "value": "x"})
+        gateway.route(
+            "/signals/GWEEBUS.CEM.SKI",
+            raw=b'{"id":"/signals/GWEEBUS.CEM.SKI","type":"stringValue","value":"\x96\xa4"}',
+        )
+
+        resources = await client.async_get_many(["/a", "/signals/GWEEBUS.CEM.SKI"])
+
+        assert set(resources) == {"/a"}
+
+    async def test_an_unreadable_body_still_raises_on_a_single_read(
+        self, gateway: FakeGateway, client: K40Client
+    ) -> None:
+        """Skipping is a batch's privilege; asking for one path is not a poll."""
+        gateway.route("/signals/GWEEBUS.CEM.SKI", raw=b'{"value":"\x96"}')
+        with pytest.raises(K40UnreadableError):
+            await client.async_get("/signals/GWEEBUS.CEM.SKI")
 
     async def test_concurrency_stays_within_the_cap(
         self, gateway: FakeGateway, session: aiohttp.ClientSession

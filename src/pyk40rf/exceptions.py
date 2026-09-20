@@ -10,6 +10,7 @@ __all__ = [
     "K40NotFoundError",
     "K40ProximityError",
     "K40ResponseError",
+    "K40UnreadableError",
 ]
 
 
@@ -56,3 +57,14 @@ class K40NotFoundError(K40Error):
 
 class K40ResponseError(K40Error):
     """The gateway answered with something this client cannot interpret."""
+
+
+class K40UnreadableError(K40ResponseError):
+    """The body itself is unparseable, whatever the client does with it.
+
+    Kept apart from the rest of :class:`K40ResponseError` because it is a
+    property of one resource and never of the conversation: an HTTP 500 may
+    well mean the gateway is in trouble, but a field carrying raw bytes inside
+    a JSON string will read that way on every poll, forever. A batch read skips
+    such a path and keeps the others; see :meth:`K40Client.async_get_many`.
+    """
