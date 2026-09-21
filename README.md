@@ -8,7 +8,7 @@ From firmware `15.00.01` the gateway serves a token-authenticated REST API on
 the local network. This library speaks it.
 
 > [!WARNING]
-> **Beta — version 0.1.5.**
+> **Beta — version 0.1.6.**
 >
 > Verified against two gateways and two heating systems, both air-to-water
 > heat pumps with a single heating circuit — one Bosch, one Buderus. The API
@@ -39,10 +39,8 @@ the local network. This library speaks it.
 
 ## Install
 
-Not on PyPI yet:
-
 ```bash
-pip install git+https://github.com/luc-ass/pyk40rf@v0.1.5
+pip install pyk40rf
 ```
 
 ## Use
@@ -196,11 +194,15 @@ All of them derive from `K40Error`; `K40ProximityError` is a subclass of
 ## Development
 
 ```bash
-pip install -e ".[dev]"
-pytest
-ruff check src tests
-mypy src/pyk40rf
+uv sync --group dev
+uv run pytest
+uv run ruff check src tests
+uv run mypy src/pyk40rf
 ```
+
+The same three run on every push, on every Python version the package claims.
+A release publishes to PyPI from `.github/workflows/release.yml` through
+trusted publishing, so no token lives in this repository.
 
 Tests run against real responses from a live device, curated and redacted into
 `tests/fixtures/`. To refresh them from your own harvest:
