@@ -8,13 +8,13 @@ From firmware `15.00.01` the gateway serves a token-authenticated REST API on
 the local network. This library speaks it.
 
 > [!WARNING]
-> **Beta — version 0.1.6.**
+> **Beta — version 0.1.7.**
 >
-> Verified against two gateways and two heating systems, both air-to-water
-> heat pumps with a single heating circuit — one Bosch, one Buderus. The API
-> covers installations this library has never seen: solar circuits, pool
-> heating, cascades of up to six heat sources. Those paths follow the
-> published specification but are untested.
+> Verified against three gateways and three heating systems, all air-to-water
+> heat pumps — two Bosch, one Buderus, one of them with a second, mixed
+> heating circuit. The API covers installations this library has never seen:
+> solar circuits, pool heating, cascades of up to six heat sources, radio
+> zones. Those paths follow the published specification but are untested.
 >
 > The public interface may still change between 0.x releases. Pin an exact
 > version.
