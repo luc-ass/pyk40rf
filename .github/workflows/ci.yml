@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A second push to the same branch makes the first run pointless.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint and types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - run: uv sync --group dev
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy src/pyk40rf
+
+  test:
+    # The package claims 3.12 and up, so it is tested on every version it
+    # claims -- the integration runs on the newest, other consumers may not.
+    name: Tests on ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+          enable-cache: true
+      - run: uv sync --group dev
+      - run: uv run pytest --cov=pyk40rf --cov-report=term-missing --cov-fail-under=95
