@@ -66,12 +66,36 @@ class NumericResource(Resource):
         return bool(self.options)
 
 
+#: The two words the gateway writes when a ``stringValue`` carries a flag.
+#: Lower-cased on comparison, because nothing promises the casing stays.
+_BOOLEAN_WORDS: dict[str, bool] = {"true": True, "false": False}
+
+
 @dataclass(frozen=True, slots=True)
 class StringResource(Resource):
-    """A ``stringValue``, optionally constrained to ``allowedValues``."""
+    """A ``stringValue``, optionally constrained to ``allowedValues``.
+
+    Most of the ``/signals`` branch is flags carried in this shape: across the
+    three installations seen so far, every ``stringValue`` signal but the two
+    ``GWEEBUS.CEM.*`` identity strings reads exactly ``"true"`` or ``"false"``.
+    :attr:`boolean` decodes those and says nothing about the rest, so a caller
+    can model a flag as a flag without guessing at a polarity.
+    """
 
     value: str | None
     options: tuple[str, ...] = ()
+
+    @property
+    def boolean(self) -> bool | None:
+        """The reading as a flag, or ``None`` where it is not one."""
+        if self.value is None:
+            return None
+        return _BOOLEAN_WORDS.get(self.value.strip().lower())
+
+    @property
+    def is_boolean(self) -> bool:
+        """Whether this reading is one of the gateway's two flag words."""
+        return self.boolean is not None
 
 
 @dataclass(frozen=True, slots=True)

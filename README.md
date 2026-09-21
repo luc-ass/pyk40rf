@@ -146,6 +146,23 @@ null the value in every form, and are kept out of `options`. The *shape* of the
 field decides between the list and the map, and the unit decides what the map
 means -- neither is a property of the path.
 
+### Flags arrive as strings
+
+Most of the `/signals` branch is flags, and the gateway writes them as the
+words `"true"` and `"false"` in a `stringValue`. Across the three installations
+seen so far that holds for every string signal but the two `GWEEBUS.CEM.*`
+identity strings, so the reading decides rather than the id:
+
+```python
+resource.value       # "true"
+resource.boolean     # True
+resource.is_boolean  # True
+```
+
+A string that is not one of the two words -- `""`, `"off"`, a bridge name --
+reports `boolean=None` rather than `False`, so an identity string is never
+mistaken for a flag that happens to be off.
+
 ### Installations differ
 
 The published spec declares 261 paths covering every possible installation --

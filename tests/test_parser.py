@@ -148,6 +148,34 @@ def test_string_value_exposes_allowed_values() -> None:
     assert resource.options == ("off", "on")
 
 
+def test_string_value_decodes_the_gateway_flag_words() -> None:
+    """Most of the /signals branch is flags written as "true"/"false"."""
+    for word, expected in (("true", True), ("false", False), ("TRUE", True), (" false ", False)):
+        resource = parse_resource(
+            {"id": "/signals/SRC.CUHP.HP1.CompressorStatus", "type": "stringValue", "value": word}
+        )
+        assert isinstance(resource, StringResource)
+        assert resource.boolean is expected
+        assert resource.is_boolean
+
+
+def test_a_string_that_is_not_a_flag_stays_a_string() -> None:
+    """An identity string must not be mistaken for a flag with a false value."""
+    for word in ("", "off", "Not_Commissioned", "HomeAssistant-EEBUS-Bridge"):
+        resource = parse_resource(
+            {"id": "/signals/GWEEBUS.CEM.ID", "type": "stringValue", "value": word}
+        )
+        assert isinstance(resource, StringResource)
+        assert resource.boolean is None
+        assert not resource.is_boolean
+
+
+def test_a_missing_string_is_not_a_flag() -> None:
+    resource = parse_resource({"id": "/signals/x", "type": "stringValue", "value": None})
+    assert isinstance(resource, StringResource)
+    assert resource.boolean is None
+
+
 def test_energy_splits_into_components() -> None:
     resource = parse_resource(load("heatSources_emon_totalConsumption"))
     assert isinstance(resource, EnergyResource)
